@@ -8,7 +8,6 @@ from docx.oxml.shared import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-
 import json
 import re
 
@@ -30,7 +29,8 @@ def parse_project(project_str):
     
     # 特殊处理关键节点字段（示例中第4个字段，索引3）
     # 将分号分隔转换为斜杠分隔
-    processed_fields[4] = processed_fields[4].replace('；', ';')  # 统一分隔符
+    # 统一分隔符
+    processed_fields[4] = processed_fields[4].replace('；', ';')  
     processed_fields[4] = '/'.join([x.split('：')[-1].strip() for x in processed_fields[4].split(';')])
     
     return processed_fields
@@ -45,7 +45,7 @@ def export_projects():
         data = request.get_json(silent=True)
         
         # 验证1: 是否是有效JSON
-        if data is None:  # 注意：空列表 [] 会通过此检查，但 isinstance([], dict) 会失败
+        if data is None:  # 注意：空列表 [] 会通过此检查
             return jsonify({"status": "error", "message": "无效的JSON格式"}), 400
 
         # 创建Excel
@@ -195,7 +195,6 @@ def parse_records(line):
             13:parts[12], # 工作量估计
             14:parts[13]  # 成本估计
         }
-        print("record=")
         print(record)
     except (ValueError, IndexError) as e:
         print(f"数据解析错误：{line} -> {str(e)}")
