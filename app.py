@@ -17,9 +17,9 @@ app = Flask(__name__)
 def parse_project(project_str):
     """解析单个项目字符串"""
     # 分割字段并清理空白
-    raw_fields = [f.strip() for f in project_str.split("|")]
+    raw_fields2 = [f.strip() for f in project_str.split("|")]
     # 去除首尾空字段（原始格式为 |字段1|字段2|...| ）
-    processed_fields = raw_fields[1:-1]
+    processed_fields = raw_fields2[1:-1]
     
     # 验证字段数量（根据示例应为11个字段）
     if len(processed_fields) != 11:
@@ -42,10 +42,10 @@ def export_projects():
         if not request.is_json:
             return jsonify({"status": "error", "message": "Content-Type必须是application/json"}), 400
 
-        data = request.get_json(silent=True)
+        data2 = request.get_json(silent=True)
         
         # 验证1: 是否是有效JSON
-        if data is None:  # 注意：空列表 [] 会通过此检查
+        if data2 is None:  # 注意：空列表 [] 会通过此检查
             return jsonify({"status": "error", "message": "无效的JSON格式"}), 400
 
         # 创建Excel
@@ -78,7 +78,7 @@ def export_projects():
         }
 
         # 处理数据
-        for raw_item in data:
+        for raw_item in data2:
             fields = parse_project(raw_item)
             if fields:
                 # 调整字段顺序（如果需要）
@@ -171,8 +171,8 @@ def export_projects():
             "message": f"处理失败: {str(e)}"
         }), 500
 
-def parse_records(line):
-    parts = [p.strip() for p in line.split('|') if p.strip()]
+def parse_records(line2):
+    parts = [p.strip() for p in line2.split('|') if p.strip()]
     print("parts=") 
     print(parts)
     if len(parts) != 14:
